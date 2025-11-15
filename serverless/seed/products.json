@@ -1,0 +1,68 @@
+[
+  {
+    "product": "AMERICANA",
+    "description": "¡La Pizza preferida de los chicos! Jamón y queso mozzarella!",
+    "price": 29.9,
+    "image": "AMERICANA.webp"
+  },
+  {
+    "product": "PEPPERONI",
+    "description": "Sabor incomparable de pepperoni americano y queso mozzarella.",
+    "price": 29.9,
+    "image": "PEPPERONI.webp"
+  },
+  {
+    "product": "MOZZARELLA",
+    "description": "Para los amantes del queso una deliciosa pizza con nuestro queso mozzarella gratinado.",
+    "price": 29.9,
+    "image": "MOZZARELLA.webp"
+  },
+  {
+    "product": "HAWAIANA",
+    "description": "¡El paraiso en la mesa! Se completa con jamón, jugosa piña y queso mozzarella.",
+    "price": 34.9,
+    "image": "HAWAIANA.webp"
+  },
+  {
+    "product": "CONTINENTAL",
+    "description": "Deliciosa mixtura de Jamón, champiñones, cebolla roja y queso mozzarella.",
+    "price": 34.9,
+    "image": "CONTINENTAL.webp"
+  },
+  {
+    "product": "VEGETARIANA",
+    "description": "Champiñones, aceitunas verdes, pimientos verdes, cebolla roja y queso mozzarella",
+    "price": 34.9,
+    "image": "VEGETARIANA.webp"
+  },
+  {
+    "product": "SUPREMA",
+    "description": "Pepperoni, res, cerdo, champiñones, pimientos verdes, cebolla roja y mozzarella.",
+    "price": 34.9,
+    "image": "SUPREMA.webp"
+  },
+  {
+    "product": "MEAT LOVERS",
+    "description": "Pepperoni americano, res, cerdo, Jamón y queso mozzarella.",
+    "price": 41.9,
+    "image": "MEAT_LOVERS.webp"
+  },
+  {
+    "product": "SUPER SUPREMA",
+    "description": "Una perfecta mezcla de pepperoni americano, carne de res, carne de cerdo, Jamón, salchicha italiana, champiñones, pimientos verdes, cebolla roja, aceitunas verdes y queso mozzarella.",
+    "price": 41.9,
+    "image": "SUPER_SUPREMA.webp"
+  },
+  {
+    "product": "LA CHILI HUT",
+    "description": "Deliciosa combinación de trozos de pollo, piña, tocino y salsa Chili thai.",
+    "price": 41.9,
+    "image": "CHILI_HUT.webp"
+  },
+  {
+    "product": "CHICKEN BBQ",
+    "description": "Exquisita combinación de trozos de pollo, piña, tocino y salsa BBQ.",
+    "price": 41.9,
+    "image": "CHICKEN_BBQ.webp"
+  }
+]

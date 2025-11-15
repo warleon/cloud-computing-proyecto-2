@@ -1,0 +1,37 @@
+service: pizza-scraper
+
+provider:
+  name: aws
+  runtime: python3.13
+  region: us-east-1
+  timeout: 30
+
+  environment:
+    TABLE_PIZZA: ${sls:stage}-pizza-table
+    BUCKET_PIZZA: ${sls:stage}-pizza-bucket
+
+functions:
+  seeder:
+    handler: seeder.lambda_handler
+    timeout: 120
+    events:
+      - cloudformation: CustomResource
+
+resources:
+  Resources:
+    TablaPizzas:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_PIZZA}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+    BucketPizzas:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.BUCKET_PIZZA}
