@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     table = dynamodb.Table(table_name)
 
     # Cargar el JSON local del seed
-    with open("seed/products.json", "r", encoding="utf-8") as f:
+    with open("products.json", "r", encoding="utf-8") as f:
         products = json.load(f)
 
     uploaded = []
