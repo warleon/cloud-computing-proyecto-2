@@ -22,7 +22,7 @@ def lambda_handler(event, context):
 
     for product in products:
         image_filename = product["image"]
-        image_path = f"seed/images/{image_filename}"
+        image_path = f"images/{image_filename}"
 
         if not os.path.isfile(image_path):
             print(f"Image not found: {image_path}")

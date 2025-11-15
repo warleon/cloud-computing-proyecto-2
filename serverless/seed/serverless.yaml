@@ -16,6 +16,9 @@ functions:
     timeout: 120
     events:
       - cloudformation: CustomResource
+    package:
+      include:
+        - ./**
 
 resources:
   Resources:
