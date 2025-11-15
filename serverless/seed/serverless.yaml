@@ -1,3 +1,4 @@
+org: warleon
 service: pizza-scraper
 
 provider:
@@ -5,6 +6,8 @@ provider:
   runtime: python3.13
   region: us-east-1
   timeout: 30
+  iam:
+    role: arn:aws:iam::407603477016:role/LabRole
 
   environment:
     TABLE_PIZZA: ${sls:stage}-pizza-table
