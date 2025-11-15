@@ -1,7 +1,7 @@
 import boto3
 import os
 import json
-import base64
+import uuid
 
 s3 = boto3.client("s3")
 dynamodb = boto3.resource("dynamodb")
@@ -39,6 +39,7 @@ def lambda_handler(event, context):
 
         # Guardar datos en DynamoDB
         item = {
+            "id": str(uuid.uuid4()),
             "product": product["product"],
             "description": product["description"],
             "price": str(product["price"]),
