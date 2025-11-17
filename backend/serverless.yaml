@@ -13,6 +13,11 @@ provider:
     TABLE_NAME: ${sls:stage}-pizza-table
     BUCKET_NAME: ${sls:stage}-pizza-bucket
 
+package:
+  individualy: true
+  include:
+    - types.py
+
 functions:
   seeder:
     handler: seed/seeder.lambda_handler
