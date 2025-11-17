@@ -10,8 +10,10 @@ provider:
     role: arn:aws:iam::407603477016:role/LabRole
 
   environment:
-    TABLE_NAME: ${sls:stage}-pizza-table
-    BUCKET_NAME: ${sls:stage}-pizza-bucket
+    TABLE_NAME: ${self:service}-${sls:stage}-pizza-table
+    BUCKET_NAME: ${self:service}-${sls:stage}-pizza-bucket
+    USERS_TABLE: ${self:service}-${sls:stage}-users
+    TOKENS_TABLE: ${self:service}-${sls:stage}-tokens
 
 package:
   individualy: true
@@ -19,8 +21,14 @@ package:
     - types.py
 
 functions:
-  seeder:
-    handler: seed/seeder.lambda_handler
+  seed-products:
+    handler: seed/products.lambda_handler
+    timeout: 120
+    package:
+      include:
+        - seed/**
+  seed-admin-user:
+    handler: seed/user.lambda_handler
     timeout: 120
     package:
       include:
