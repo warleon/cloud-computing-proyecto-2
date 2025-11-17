@@ -15,11 +15,11 @@ provider:
 
 functions:
   seeder:
-    handler: seeder.lambda_handler
+    handler: seed/seeder.lambda_handler
     timeout: 120
     package:
       include:
-        - ./**
+        - seed/**
 
 resources:
   Resources:
