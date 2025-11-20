@@ -11,7 +11,7 @@ from backend.commons import (
     build_user_search_key,
 )
 
-from hasPermission import has_permission
+from backend.auth import has_permission
 
 
 def lambda_handler(event, context):

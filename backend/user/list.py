@@ -5,7 +5,7 @@ from typing import Any, Dict
 from boto3.dynamodb.conditions import Attr
 
 from backend.commons import CORS_HEADERS, users_table
-from hasPermission import has_permission
+from backend.auth import has_permission
 
 
 def lambda_handler(event, context):

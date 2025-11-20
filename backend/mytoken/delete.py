@@ -2,7 +2,7 @@
 import json
 import os
 from backend.commons import tokens_table, split_token, CORS_HEADERS
-from hasPermission import has_permission
+from backend.auth import has_permission
 
 
 def lambda_handler(event, context):

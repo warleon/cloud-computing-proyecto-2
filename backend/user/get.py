@@ -1,7 +1,7 @@
 # user/get.py
 import json
 from backend.commons import users_table, get_user, CORS_HEADERS
-from hasPermission import has_permission
+from backend.auth import has_permission
 
 
 def lambda_handler(event, context):

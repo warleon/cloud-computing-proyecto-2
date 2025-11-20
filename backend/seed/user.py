@@ -4,6 +4,7 @@ import os
 import secrets
 import string
 from backend.commons import users_table, hash_password, now_iso
+from backend.auth import ROLES
 
 
 def random_string(length=10):
@@ -49,7 +50,7 @@ def lambda_handler(event, context):
         "email": email,
         "passwordHash": password_hash,
         "salt": salt,
-        "roles": ["user", "admin"],
+        "roles": list(ROLES.keys()),
         "createdAt": now,
         "updatedAt": now,
     }

@@ -16,15 +16,6 @@ PermissionCheck = Callable[[User, Any], bool]
 ROLES = {
     "admin": {
         "users": {"view": True, "create": True, "update": True, "delete": True},
-        "incidents": {"view": True, "create": True, "update": True, "delete": True},
-    },
-    "attendant": {
-        # "users": {"view": True, "create": False, "update": False, "delete": False},
-        "incidents": {"view": True, "create": False, "update": True, "delete": False},
-    },
-    "reporter": {
-        # "users": {"view": False, "create": False, "update": False, "delete": False},
-        "incidents": {"view": True, "create": True, "update": False, "delete": False},
     },
     "user": {"tokens": {"delete": True}},
 }

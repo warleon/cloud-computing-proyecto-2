@@ -1,7 +1,7 @@
 # user/delete.py
 import json
 from backend.commons import users_table, CORS_HEADERS
-from hasPermission import has_permission
+from backend.auth import has_permission
 
 
 def lambda_handler(event, context):
