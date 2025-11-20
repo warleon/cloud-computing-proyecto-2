@@ -1,86 +1,111 @@
 # user/create.py
 import json
-import os
+from datetime import datetime
+
+from backend.types import User
 from backend.commons import (
     users_table,
     hash_password,
     now_iso,
     CORS_HEADERS,
-    VALID_USER_STATUSES,
     build_user_search_key,
 )
+
 from hasPermission import has_permission
 
 
 def lambda_handler(event, context):
-    code = has_permission(event, context)
+    # -----------------------------
+    # AUTH CHECK
+    # -----------------------------
+    code, message = has_permission(event, context)
     if code != 200:
         return {
             "statusCode": code,
             "headers": CORS_HEADERS,
-            "body": json.dumps({"message": "forbidden"}),
+            "body": json.dumps({"message": message}),
         }
 
+    # -----------------------------
+    # PARSE BODY
+    # -----------------------------
     body = event.get("body")
     if isinstance(body, str):
-        body = json.loads(body)
-    tenant = body["tenant"]
-    email = body["email"]
-    password = body["password"]
-    roles = body.get("roles") or []
-    full_name = body.get("fullName", "")
-    phone = body.get("phone", "")
-    notes = body.get("notes", "")
-    status = (body.get("status") or "ACTIVE").upper()
-    if status not in VALID_USER_STATUSES:
-        return {
-            "statusCode": 400,
-            "body": json.dumps(
-                {"message": f"status must be one of {sorted(VALID_USER_STATUSES)}"}
-            ),
-            "headers": CORS_HEADERS,
-        }
+        try:
+            body = json.loads(body)
+        except Exception:
+            return {
+                "statusCode": 400,
+                "headers": CORS_HEADERS,
+                "body": json.dumps({"message": "invalid JSON body"}),
+            }
+
+    tenant = body.get("tenant")
+    email = body.get("email")
+    password = body.get("password")
 
     if not tenant or not email or not password:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "tenant, email and password required"}),
             "headers": CORS_HEADERS,
+            "body": json.dumps({"message": "tenant, email and password are required"}),
         }
 
-    user_id = email  # as in your TS, id is duplicate of email
+    # -----------------------------
+    # PASSWORD HASHING
+    # -----------------------------
     password_hash, salt = hash_password(password)
     now = now_iso()
+    user_id = email  # ID is email
 
-    user_item = {
-        "id": user_id,
-        "tenant": tenant,
-        "email": email,
-        "passwordHash": password_hash,
-        "salt": salt,
-        "roles": roles,
-        "fullName": full_name,
-        "phone": phone,
-        "notes": notes,
-        "status": status,
-        "createdAt": now,
-        "updatedAt": now,
-        "searchKey": build_user_search_key(full_name, email, roles, status),
-    }
+    # -----------------------------
+    # BUILD USER OBJECT (Pydantic)
+    # -----------------------------
+    user = User(
+        id=user_id,
+        tenant=tenant,
+        email=email,
+        roles=body.get("roles", []),
+        fullName=body.get("fullName", ""),
+        phone=body.get("phone", ""),
+        notes=body.get("notes", ""),
+        createdAt=datetime.fromisoformat(now),
+        updatedAt=datetime.fromisoformat(now),
+        searchKey=build_user_search_key(
+            body.get("fullName", ""),
+            email,
+            body.get("roles", []),
+        ),
+        passwordHash=password_hash,
+        salt=salt,
+    )
 
+    # Convert to DynamoDB item
+    user_item = user.model_dump()
+
+    # -----------------------------
+    # WRITE TO DYNAMODB
+    # -----------------------------
     try:
         users_table.put_item(
-            Item=user_item, ConditionExpression="attribute_not_exists(id)"
+            Item=user_item,
+            ConditionExpression="attribute_not_exists(id)",
         )
-        # don't include passwordHash/salt in response
+
+        # Remove sensitive fields before sending back
+        safe_user = user.model_copy()
+        safe_user.passwordHash = None
+        safe_user.salt = None
+
         return {
             "statusCode": 201,
-            "body": json.dumps(user_item),
             "headers": CORS_HEADERS,
+            "body": safe_user.model_dump_json(),
         }
+
     except Exception as e:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "could not create user", "error": str(e)}),
             "headers": CORS_HEADERS,
+            "body": json.dumps({"message": "could not create user", "error": str(e)}),
         }

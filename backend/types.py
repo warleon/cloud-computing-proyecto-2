@@ -1,7 +1,7 @@
-from pydantic import BaseModel
 from enum import Enum
 from datetime import datetime
 from typing import List, Optional
+from pydantic import BaseModel, Field
 
 
 class Tenant(BaseModel):
@@ -45,9 +45,26 @@ class Order(BaseModel):
     tenant_id: str
     client_latitude: float
     client_longitude: float
-    items: List[OrderItem]
+    items: List[OrderItem] = Field(default_factory=list)
     status: OrderStatus = OrderStatus.QUEUED
     secret_code: str  # code customer must give to courier
     courier_id: Optional[str] = None
     created_at: datetime = datetime.utcnow()
     updated_at: datetime = datetime.utcnow()
+
+
+class User(BaseModel):
+    id: str
+    tenant: str
+    email: str
+    roles: List[str] = Field(default_factory=list)
+    fullName: str = ""
+    phone: str = ""
+    notes: str = ""
+    createdAt: datetime
+    updatedAt: datetime
+    searchKey: str
+
+    # Sensitive backend-only fields (never returned to clients)
+    passwordHash: Optional[str] = None
+    salt: Optional[str] = None

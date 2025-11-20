@@ -31,16 +31,6 @@ ROLES = {
 
 ARN_ACTION = {
     "POST/auth/token/delete": ("tokens", "delete"),
-    "POST/auth/user/create": ("users", "create"),
-    "POST/auth/user/get": ("users", "view"),
-    "POST/auth/user/list": ("users", "view"),
-    "PUT/auth/user/update": ("users", "update"),
-    "POST/auth/user/delete": ("users", "delete"),
-    "POST/incident/create": ("incidents", "create"),
-    "POST/incident/get": ("incidents", "view"),
-    "POST/incident/list": ("incidents", "view"),
-    "PUT/incident/update": ("incidents", "update"),
-    "POST/incident/delete": ("incidents", "delete"),
 }
 
 
@@ -89,8 +79,7 @@ def has_permission(event, context):
     headers = event.get("headers") or {}
     auth_header = headers.get("Authorization") or headers.get("authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
-        print("Authorization header missing or invalid")
-        return 401
+        return 401, "Unauthenticated, missing token"
 
     token = auth_header[len("Bearer ") :]
     method = (event.get("httpMethod") or "").upper()
@@ -100,14 +89,16 @@ def has_permission(event, context):
     mapping = ARN_ACTION.get(arn_key)
     if not mapping:
         print("No ARN mapping for key", arn_key)
-        return 500
+        return 500, f"Endpoint ${arn_key} not supported"
 
     resource, action = mapping
 
     data = get_token_data(token)
     if not data:
-        return 401
+        return 401, "Unauthenticated, token not recognized"
 
     allowed = validate_permission(data.get("user"), resource, action)
-    print("AUTHORIZED", allowed)
-    return 200
+    if not allowed:
+        return 403, f"Unauthorized, user has no permissions to access ${arn_key}"
+
+    return 200, ""
