@@ -1,5 +1,9 @@
+import "leaflet/dist/leaflet.css"
+
+import { StoreLocatorPage } from "@/pages/StoreLocatorPage"
+
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello Front Cliente!</h1>;
+  return <StoreLocatorPage />
 }
 
-export default App;
+export default App
