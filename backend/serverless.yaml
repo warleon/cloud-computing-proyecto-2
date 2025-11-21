@@ -1,5 +1,5 @@
 org: warleon
-service: pizza-scraper
+service: pizza-app
 
 provider:
   name: aws
@@ -10,10 +10,10 @@ provider:
     role: arn:aws:iam::407603477016:role/LabRole
 
   environment:
-    TABLE_NAME: ${self:service}-${sls:stage}-pizza-table
-    BUCKET_NAME: ${self:service}-${sls:stage}-pizza-bucket
-    USERS_TABLE: ${self:service}-${sls:stage}-users
-    TOKENS_TABLE: ${self:service}-${sls:stage}-tokens
+    TABLE_NAME: ${self:service}-${sls:stage}-products-table
+    BUCKET_NAME: ${self:service}-${sls:stage}-products-bucket
+    USERS_TABLE: ${self:service}-${sls:stage}-users-table
+    TOKENS_TABLE: ${self:service}-${sls:stage}-tokens-table
 
 package:
   individualy: true
@@ -23,16 +23,71 @@ package:
 functions:
   seed-products:
     handler: seed/products.lambda_handler
-    timeout: 120
     package:
       include:
         - seed/**
+
   seed-admin-user:
     handler: seed/user.lambda_handler
-    timeout: 120
     package:
       include:
         - seed/**
+
+  login:
+    handler: mytoke/create.lambda_handler
+    events:
+      - http:
+        path: auth/login
+        method: post
+        cors: true
+
+  logout:
+    handler: mytoke/delete.lambda_handler
+    events:
+      - http:
+        path: auth/logout
+        method: post
+        cors: true
+
+  user-create:
+    handler: user/create.lambda_handler
+    events:
+      - http:
+          path: auth/user/create
+          method: post
+          cors: true
+
+  user-get:
+    handler: user/get.lambda_handler
+    events:
+      - http:
+          path: auth/user/get
+          method: post
+          cors: true
+
+  user-list:
+    handler: user/list.lambda_handler
+    events:
+      - http:
+          path: auth/user/list
+          method: post
+          cors: true
+
+  user-update:
+    handler: user/update.lambda_handler
+    events:
+      - http:
+          path: auth/user/update
+          method: post
+          cors: true
+
+  user-delete:
+    handler: user/delete.lambda_handler
+    events:
+      - http:
+          path: auth/user/delete
+          method: post
+          cors: true
 
 resources:
   Resources:
@@ -87,3 +142,21 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.BUCKET_NAME}
+
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseType: DEFAULT_4XX
+        RestApiId: { Ref: ApiGatewayRestApi }
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+
+    GatewayResponseDefault5XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseType: DEFAULT_5XX
+        RestApiId: { Ref: ApiGatewayRestApi }
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
