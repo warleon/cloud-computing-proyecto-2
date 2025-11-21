@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Navbar } from "@/components/Navbar";
 import { ContactPage } from "@/pages/ContactPage";
+import { LoginPage } from "@/pages/LoginPage";
 import { ProductMenuPage } from "@/pages/ProductMenuPage";
 import { StoreLocatorPage } from "@/pages/StoreLocatorPage";
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/store" element={<StoreLocatorPage />} />
         <Route path="/products" element={<ProductMenuPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/products" replace />} />
       </Routes>
     </div>

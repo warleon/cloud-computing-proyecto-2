@@ -59,11 +59,14 @@ export function Navbar() {
             <span className="text-xs uppercase">SJM</span>
           </div>
           <Button
+            asChild
             variant="ghost"
-            className="flex items-center gap-2 rounded-full border border-[#ffd6d6] bg-white px-4 py-2 text-[#d91b2a] hover:bg-[#ffe3e3]"
+            className="rounded-full border border-[#ffd6d6] bg-white px-4 py-2 text-[#d91b2a] hover:bg-[#ffe3e3]"
           >
-            <UserRound className="h-4 w-4" />
-            Ingresar
+            <Link to="/login" className="flex items-center gap-2">
+              <UserRound className="h-4 w-4" />
+              Ingresar
+            </Link>
           </Button>
         </div>
       </div>
