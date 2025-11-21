@@ -1,26 +1,28 @@
-import { Link, NavLink } from "react-router-dom"
-import { MapPin, Phone, UserRound } from "lucide-react"
+import { Link, NavLink } from "react-router-dom";
+import { MapPin, Phone, UserRound } from "lucide-react";
 
-import logo from "@/assets/logo.svg"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import logo from "@/assets/logo.svg";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Store", to: "/store" },
   { label: "Products", to: "/products" },
   { label: "Contact", to: "/contact" },
-]
+];
 
 export function Navbar() {
   return (
-    <header className="bg-[#fffaf8] shadow-sm">
+    <header className="bg-[#fff7f5] ">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
         <Link to="/products" className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f8d7d9] text-[#d91b2a]">
             <img src={logo} alt="Pizza Hut" className="h-8 w-8" />
           </div>
           <div className="leading-tight text-[#1a1a1a]">
-            <p className="text-lg font-semibold uppercase tracking-wide">Pizza Hut</p>
+            <p className="text-lg font-semibold uppercase tracking-wide">
+              Pizza Hut
+            </p>
             <p className="text-sm text-[#d91b2a]">Sabor que enamora</p>
           </div>
         </Link>
@@ -35,7 +37,7 @@ export function Navbar() {
                   "rounded-full px-5 py-2 transition-all",
                   isActive
                     ? "bg-[#d91b2a] text-white shadow-[0_8px_20px_rgba(217,27,42,0.25)]"
-                    : "text-[#5a5a5a] hover:bg-[#ffecef] hover:text-[#d91b2a]",
+                    : "text-[#5a5a5a] hover:bg-[#ffecef] hover:text-[#d91b2a]"
                 )
               }
             >
@@ -66,5 +68,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

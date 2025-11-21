@@ -1,11 +1,11 @@
-import "leaflet/dist/leaflet.css"
+import "leaflet/dist/leaflet.css";
 
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import { Navbar } from "@/components/Navbar"
-import { ContactPage } from "@/pages/ContactPage"
-import { ProductMenuPage } from "@/pages/ProductMenuPage"
-import { StoreLocatorPage } from "@/pages/StoreLocatorPage"
+import { Navbar } from "@/components/Navbar";
+import { ContactPage } from "@/pages/ContactPage";
+import { ProductMenuPage } from "@/pages/ProductMenuPage";
+import { StoreLocatorPage } from "@/pages/StoreLocatorPage";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="*" element={<Navigate to="/products" replace />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
